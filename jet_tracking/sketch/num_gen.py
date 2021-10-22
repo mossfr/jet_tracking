@@ -117,4 +117,5 @@ class SimulationGenerator(object):
                 val["i0"] = self.peak_intensity * 1 + self.bg * (c - 0.5)
 
         val["ratio"] = val["diff"] / val["i0"]
+        self.context.update_ratio(val["ratio"])
         return val

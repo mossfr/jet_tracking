@@ -106,3 +106,11 @@ class Signals(QtCore.QObject):
     # emit in editorWidget
     # connect in jetImageWidget
     updateImage = QtCore.pyqtSignal(np.ndarray)
+    # emit in context
+    # connect in sim_motorMoving
+    enableSimTracking = QtCore.pyqtSignal(bool)
+    # emit in context
+    # connect in sim_motorMoving
+    changeSimAlgorithm = QtCore.pyqtSignal(str)
+
+    changeRatio = QtCore.pyqtSignal(float)

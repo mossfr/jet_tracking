@@ -57,6 +57,9 @@ class Context(object):
         self.center = 0.03
         self.max = 10
         self.bg = 0.05
+        self.simTracking = False
+        self.sim_algorithm = "Linear Scan"
+        self.ratio = 1
 
         # added while adding simulator
     def update_motor_position(self, mp):
@@ -94,6 +97,18 @@ class Context(object):
     def update_calibration_source(self, cal_src):
         self.calibration_source = cal_src
         self.signals.changeCalibrationSource.emit(self.calibration_source)
+
+    def update_sim_tracking(self, sim_tracking):
+        self.simTracking = sim_tracking
+        self.signals.enableSimTracking.emit(self.simTracking)
+
+    def update_sim_algorithm(self, al):
+        self.sim_algorithm = al
+        self.signals.changeSimAlgorithm.emit(self.sim_algorithm)
+
+    def update_ratio(self, r):
+        self.ratio = r
+        self.signals.changeRatio.emit(self.ratio)
 
     def update_percent(self, p):
         """

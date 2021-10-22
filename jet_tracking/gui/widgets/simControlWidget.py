@@ -2,23 +2,29 @@ from PyQt5.QtWidgets import QFrame
 from gui.widgets.simControlWidgetUi import Sim_Ui
 from datastream import StatusThread, MotorThread
 import logging
+from sketch.sim_motorMoving import SimulatedMotor
+import threading
 
 log = logging.getLogger(__name__)
 
 
-class SimWidget(QFrame, Sim_Ui):
+class SimWidget(QFrame, Sim_Ui, SimulatedMotor):
 
     def __init__(self, context, signals):
         super(SimWidget, self).__init__()
         self.signals = signals
         self.context = context
         self.setupUi(self)
-#        self.initialize_threads()
+        self.initialize_threads()
         self.make_connections()
         self.set_sim_options()
+        self.left = -0.1
+        self.right = 0.1
+        self.ratio = self.context.ratio
+        self.ratios = []
 
-#    def initialize_threads(self):
-#        self.sim_status = StatusThread(self.context, self.signals)
+    def initialize_threads(self):
+        self.sim_status = StatusThread(self.context, self.signals)
 
     def set_sim_options(self):
         self.context.update_motor_position(float(self.box_motor_pos.text()))
@@ -29,7 +35,7 @@ class SimWidget(QFrame, Sim_Ui):
         self.context.update_max_intensity(float(self.box_max_int.text()))
         self.context.update_background(float(self.box_bg.text()))
 
-#        self.context.update_algorithm(self.cbox_algorithm.currentText())
+        self.context.update_sim_algorithm(self.cbox_sim_algorithm.currentText())
 
     def make_connections(self):
         self.box_motor_pos.checkVal.connect(self.context.update_motor_position)
@@ -40,11 +46,14 @@ class SimWidget(QFrame, Sim_Ui):
         self.box_max_int.checkVal.connect(self.context.update_max_intensity)
         self.box_bg.checkVal.connect(self.context.update_background)
 
-#        self.cbox_algorithm.currentTextChanged.connect(self.context.update_algorithm)
-#        self.bttn_start_tracking.clicked.connect(self._start_sim)
+        self.cbox_sim_algorithm.currentTextChanged.connect(self.context.update_sim_algorithm)
+        self.bttn_start_tracking.clicked.connect(self._start_sim)
 
-#    def _start_sim(self):
+    def _start_sim(self):
 #        self.sim_status.start()
+#        self._start()
+        thread = threading.Thread(target = self._start())
+        thread.start()
 
 #    def _enable_tracking(self):
 #        self.update_tracking_status("enabled", green)

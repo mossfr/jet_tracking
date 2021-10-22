@@ -93,6 +93,7 @@ class ValueReader(metaclass=Singleton):
         self.ratio = self.sim_vals["ratio"]
         self.dropped = self.sim_vals["dropped"]
 #        self.motor_position = self.sim_vals["motor_position"]
+#        self.context.update_i0(self.i0)
 
     def read_value(self):  # needs to initialize first maybe using a decorator?
         if self.context.live_data:
@@ -171,6 +172,7 @@ class StatusThread(QThread):
         self.ave_cycle = self.context.ave_cycle
         self.x_cycle = self.context.x_cycle
         self.ave_idx = self.context.ave_idx
+        #self.
 
     def create_value_reader(self):
         self.reader = ValueReader(self.context, self.signals)

@@ -47,6 +47,11 @@ class Sim_Ui(object):
             background-color: red;\
             font-size:16px;\
             ")
+        obj.bttn_search = QPushButton("Search")
+        obj.bttn_search.setStyleSheet("\
+            background-color: yellow;\
+            font-size:16px;\
+            ")
 
         obj.layout_percent_drop = QHBoxLayout()
         obj.layout_percent_drop.addWidget(obj.lbl_percent_drop, 75)
@@ -76,6 +81,8 @@ class Sim_Ui(object):
         obj.layout_start.addWidget(obj.bttn_start_tracking)
         obj.layout_stop = QHBoxLayout()
         obj.layout_stop.addWidget(obj.bttn_stop_tracking)
+        obj.layout_search = QHBoxLayout()
+        obj.layout_search.addWidget(obj.bttn_search)
 
         obj.layout.addLayout(obj.layout_percent_drop)
         obj.layout.addLayout(obj.layout_int)
@@ -88,3 +95,4 @@ class Sim_Ui(object):
         obj.layout.addLayout(obj.layout_algorithm)
         obj.layout.addLayout(obj.layout_start)
         obj.layout.addLayout(obj.layout_stop)
+        obj.layout.addLayout(obj.layout_search)
