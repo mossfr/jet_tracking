@@ -47,12 +47,12 @@ class SimWidget(QFrame, Sim_Ui, SimulatedMotor):
         self.box_bg.checkVal.connect(self.context.update_background)
 
         self.cbox_sim_algorithm.currentTextChanged.connect(self.context.update_sim_algorithm)
-        self.bttn_start_tracking.clicked.connect(self._start_sim)
+        self.bttn_search.clicked.connect(self._start_search)
 
-    def _start_sim(self):
+    def _start_search(self):
 #        self.sim_status.start()
 #        self._start()
-        thread = threading.Thread(target = self._start())
+        thread = threading.Thread(target=self._start, args=())
         thread.start()
 
 #    def _enable_tracking(self):
