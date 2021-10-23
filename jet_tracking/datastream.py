@@ -93,12 +93,8 @@ class ValueReader(metaclass=Singleton):
         self.diff = self.sim_vals["diff"]
         self.ratio = self.sim_vals["ratio"]
         self.dropped = self.sim_vals["dropped"]
-<<<<<<< HEAD
 #        self.motor_position = self.sim_vals["motor_position"]
 #        self.context.update_i0(self.i0)
-=======
-        #self.motor_position = self.sim_vals["motor_position"]
->>>>>>> 3c17824360e58add540907adf7f261802bba9e76
 
     def read_value(self):  # needs to initialize first maybe using a decorator?
         if self.context.live_data:

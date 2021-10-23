@@ -100,11 +100,7 @@ class SimulatedMotor(object):
     def sim_ternary(self):
         print("ternary search")
 
-    def sim_test(self):
+    def sim_tracking(self):
         print("you are now tracking")
-#        time.sleep(5)
-        self.motor_position = 0.03
-        print(self.motor_position)
-        self.context.update_motor_position(float(self.motor_position))
 
 
