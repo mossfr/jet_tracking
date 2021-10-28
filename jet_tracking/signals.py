@@ -112,5 +112,9 @@ class Signals(QtCore.QObject):
     # emit in context
     # connect in sim_motorMoving
     changeSimAlgorithm = QtCore.pyqtSignal(str)
-
+    # emit in context
+    # connect in sim_motorMoving
     changeRatio = QtCore.pyqtSignal(float)
+    # emit in context
+    # connect in sim_motorMoving
+    changeDropped = QtCore.pyqtSignal(bool)

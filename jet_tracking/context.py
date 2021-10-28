@@ -61,6 +61,7 @@ class Context(object):
         self.simTracking = False
         self.sim_algorithm = "Linear Scan"
         self.ratio = 1
+        self.dropped = False
 
         # added while adding simulator
     def update_motor_position(self, mp):
@@ -110,6 +111,10 @@ class Context(object):
     def update_ratio(self, r):
         self.ratio = r
         self.signals.changeRatio.emit(self.ratio)
+
+    def update_dropped(self, d):
+        self.dropped = d
+        self.signals.changeDropped.emit(self.dropped)
 
     def update_percent(self, p):
         """

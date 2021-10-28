@@ -110,7 +110,7 @@ class SimulationGenerator(object):
                 val["dropped"] = False
                 val["i0"] = self.peak_intensity * 1 + self.bg * (c - 0.5)
 
-#off jet
+# off jet
             else:
                 val["diff"] = self.bg * (1 + (a - 0.5))
                 val["dropped"] = False
@@ -118,4 +118,5 @@ class SimulationGenerator(object):
 
         val["ratio"] = val["diff"] / val["i0"]
         self.context.update_ratio(val["ratio"])
+        self.context.update_dropped(val["dropped"])
         return val

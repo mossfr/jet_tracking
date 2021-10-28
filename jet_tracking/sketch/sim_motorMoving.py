@@ -56,11 +56,15 @@ class SimulatedMotor(object):
 
     def average_intensity(self, context):
         self.t = 0
-        while self.t < 5:
-            self.ratio_pt = []
-            self.ratio_pt.append(context.ratio)
-            time.sleep(1 / 20)
-            self.t += 1
+        while self.t < 10:
+            if context.dropped is False:
+                self.ratio_pt = []
+                self.ratio_pt.append(context.ratio)
+                time.sleep(1 / 10)
+                self.t += 1
+            else:
+                time.sleep(1 / 10)
+                pass
         return statistics.mean(self.ratio_pt)
 
     def _start(self):
@@ -68,7 +72,7 @@ class SimulatedMotor(object):
         if self.sim_algorithm == "Linear Scan":
             self.sim_linear(self.context)
         elif self.sim_algorithm == "Ternary Search":
-            self.sim_ternary()
+            self.sim_ternary(self.context)
 
     def sim_linear(self, context):
         self.motor_initial = context.motor_position
@@ -97,10 +101,52 @@ class SimulatedMotor(object):
         else:
             self.context.update_motor_position(self.motor_initial)
 
-    def sim_ternary(self):
-        print("ternary search")
+    def sim_ternary(self, context):
+        self.left = -0.3
+        self.right = 0.3
+        self.left_third = 0
+        self.right_third = 0
+        self.tol = 0.01
+        self.motor_position = context.motor_position
+        self.ratio_left = 0
+        self.ratio_right = 0
+        self.center = 0
+        while abs(self.left - self.right) >= self.tol:
+            self.left_third = self.left + (self.right - self.left) / 3
+            self.motor_position = self.left_third
+            self.context.update_motor_position(self.motor_position)
+            self.ratio_left = self.average_intensity(context)
+            self.right_third = self.right - (self.right - self.left) / 3
+            self.motor_position = self.right_third
+            self.context.update_motor_position(self.motor_position)
+            self.ratio_right = self.average_intensity(context)
+            if self.ratio_left < self.ratio_right:
+                self.left = self.left_third
+            else:
+                self.right = self.right_third
+        self.motor_position = (self.right + self.left) / 2
+        self.context.update_motor_position(self.motor_position)
+#        print(self.motor_position)
+
+    def sim_golden_section(self):
+        print("golden section search")
 
     def sim_tracking(self):
-        print("you are now tracking")
+        self.track(self.context)
+
+    def track(self, context):
+        self.low = 0.9 * 1
+        self.ratio_ave = 1
+        while context.simTracking is True:
+            time.sleep(5)
+#            print("tracking")
+            self.ratio_ave = self.average_intensity(context)
+            print(self.ratio_ave)
+            if self.ratio_ave < self.low:
+#                print("starting search")
+                self._start()
+            else:
+                time.sleep(1)
+                self.ratio_ave = self.average_intensity(context)
 
 

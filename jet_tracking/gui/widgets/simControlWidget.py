@@ -48,6 +48,8 @@ class SimWidget(QFrame, Sim_Ui, SimulatedMotor):
 
         self.cbox_sim_algorithm.currentTextChanged.connect(self.context.update_sim_algorithm)
         self.bttn_search.clicked.connect(self._start_search)
+        self.bttn_start_tracking.clicked.connect(self._start_tracking)
+        self.bttn_stop_tracking.clicked.connect(self._stop_tracking)
 
     def _start_search(self):
 #        self.sim_status.start()
@@ -55,10 +57,16 @@ class SimWidget(QFrame, Sim_Ui, SimulatedMotor):
         thread = threading.Thread(target=self._start, args=())
         thread.start()
 
-#    def _enable_tracking(self):
+    def _start_tracking(self):
 #        self.update_tracking_status("enabled", green)
-#        self.context.update_tracking(True)
-#        self._start_motor()
+        self.context.update_sim_tracking(True)
+#        self.sim_tracking()
+        thread2 = threading.Thread(target=self.sim_tracking, args=())
+        thread2.start()
+
+    def _stop_tracking(self):
+#        self.update_tracking_status("disabled", red)
+        self.context.update_sim_tracking(False)
 
 #    def set_tracking_status(self, status, color):
 #        self.lbl_tracking_status.setText(status)
