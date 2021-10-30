@@ -118,3 +118,24 @@ class Signals(QtCore.QObject):
     # emit in context
     # connect in sim_motorMoving
     changeDropped = QtCore.pyqtSignal(bool)
+    # emit in context
+    # connect in SimControlWidget
+    changeAverageTime = QtCore.pyqtSignal(float)
+    # emit in context
+    # connect in SimControlWidget
+    changeLeft = QtCore.pyqtSignal(float)
+    # emit in context
+    # connect in SimControlWidget
+    changeRight = QtCore.pyqtSignal(float)
+    # emit in context
+    # connect in SimControlWidget
+    changeStep = QtCore.pyqtSignal(float)
+    # emit in context
+    # connect in SimControlWidget
+    changeSimTol = QtCore.pyqtSignal(float)
+    # emit in context
+    # connect in SimControlWidget
+    changeThresh = QtCore.pyqtSignal(float)
+    # emit in context
+    # connect in SimControlWidget
+    changeWait = QtCore.pyqtSignal(float)

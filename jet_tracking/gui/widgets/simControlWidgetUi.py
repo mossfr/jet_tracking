@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QLabel, QSlider, QSizePolicy, QButtonGroup, QPushButton
-from gui.widgets.basicWidgets import QRangeSlider, Label, LineEdit, ComboBox
+from gui.widgets.basicWidgets import CollapsibleBox, QRangeSlider, Label, LineEdit, ComboBox
 
 class Sim_Ui(object):
 
@@ -10,6 +10,11 @@ class Sim_Ui(object):
 
         obj.layout = QVBoxLayout()
         obj.setLayout(obj.layout)
+
+#        obj.box_jet = CollapsibleBox("Jet and Motor Controls")
+#        obj.layout.addWidget(obj.box_jet)
+        obj.lbl_jet = Label("Jet and Motor Controls")
+        obj.lbl_jet.setTitleStylesheet()
 
         obj.lbl_percent_drop = QLabel("Dropped Shots (%)")
         obj.box_percent_drop = LineEdit("10")
@@ -33,10 +38,36 @@ class Sim_Ui(object):
         obj.box_bg = LineEdit("0.05")
         obj.box_bg.valRange(0, 1)
 
+#        obj.box_search = CollapsibleBox("Search Controls")
+#        obj.layout.addWidget(obj.box_search)
+        obj.lbl_search = Label("Search Controls")
+        obj.lbl_search.setTitleStylesheet()
+
+        obj.lbl_ave_time = QLabel("Averaging Time (s)")
+        obj.box_ave_time = LineEdit("1")
+        obj.box_ave_time.valRange(0.01, 100)
+        obj.lbl_left = QLabel("Left Bound (mm)")
+        obj.box_left = LineEdit("-0.1")
+        obj.box_left.valRange(-100, 100)
+        obj.lbl_right = QLabel("Right Bound (mm)")
+        obj.box_right = LineEdit("0.1")
+        obj.box_right.valRange(-100, 100)
+        obj.lbl_step = QLabel("Motor Step (mm)")
+        obj.box_step = LineEdit("0.005")
+        obj.box_step.valRange(0.001, 1)
+        obj.lbl_sim_tol = QLabel("Convergence Tolerance (mm)")
+        obj.box_sim_tol = LineEdit("0.001")
+        obj.box_sim_tol.valRange(0.0001, 1)
+        obj.lbl_thresh = QLabel("Tracking Threshold (% max)")
+        obj.box_thresh = LineEdit("90")
+        obj.box_thresh.valRange(1, 99)
+        obj.lbl_wait = QLabel("Wait Time (s)")
+        obj.box_wait = LineEdit("5")
+        obj.box_wait.valRange(0.01, 100)
         obj.cbox_sim_algorithm = ComboBox()
         obj.cbox_sim_algorithm.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
-        obj.cbox_sim_algorithm.addItem("Ternary Search")
         obj.cbox_sim_algorithm.addItem("Linear Scan")
+        obj.cbox_sim_algorithm.addItem("Ternary Search")
         obj.bttn_start_tracking = QPushButton("Start Tracking")
         obj.bttn_start_tracking.setStyleSheet("\
             background-color: green;\
@@ -75,6 +106,31 @@ class Sim_Ui(object):
         obj.layout_bg.addWidget(obj.lbl_bg, 75)
         obj.layout_bg.addWidget(obj.box_bg)
 
+
+#        obj.box_jet.setContentLayout(obj.layout)
+
+        obj.layout_ave_time = QHBoxLayout()
+        obj.layout_ave_time.addWidget(obj.lbl_ave_time, 75)
+        obj.layout_ave_time.addWidget(obj.box_ave_time)
+        obj.layout_left = QHBoxLayout()
+        obj.layout_left.addWidget(obj.lbl_left, 75)
+        obj.layout_left.addWidget(obj.box_left)
+        obj.layout_right = QHBoxLayout()
+        obj.layout_right.addWidget(obj.lbl_right, 75)
+        obj.layout_right.addWidget(obj.box_right)
+        obj.layout_step = QHBoxLayout()
+        obj.layout_step.addWidget(obj.lbl_step, 75)
+        obj.layout_step.addWidget(obj.box_step)
+        obj.layout_sim_tol = QHBoxLayout()
+        obj.layout_sim_tol.addWidget(obj.lbl_sim_tol, 75)
+        obj.layout_sim_tol.addWidget(obj.box_sim_tol)
+        obj.layout_thresh = QHBoxLayout()
+        obj.layout_thresh.addWidget(obj.lbl_thresh, 75)
+        obj.layout_thresh.addWidget(obj.box_thresh)
+        obj.layout_wait = QHBoxLayout()
+        obj.layout_wait.addWidget(obj.lbl_wait, 75)
+        obj.layout_wait.addWidget(obj.box_wait)
+
         obj.layout_algorithm = QHBoxLayout()
         obj.layout_algorithm.addWidget(obj.cbox_sim_algorithm)
         obj.layout_start = QHBoxLayout()
@@ -84,6 +140,7 @@ class Sim_Ui(object):
         obj.layout_search = QHBoxLayout()
         obj.layout_search.addWidget(obj.bttn_search)
 
+        obj.layout.addWidget(obj.lbl_jet)
         obj.layout.addLayout(obj.layout_percent_drop)
         obj.layout.addLayout(obj.layout_int)
         obj.layout.addLayout(obj.layout_motor_pos)
@@ -91,7 +148,14 @@ class Sim_Ui(object):
         obj.layout.addLayout(obj.layout_jet_center)
         obj.layout.addLayout(obj.layout_max_int)
         obj.layout.addLayout(obj.layout_bg)
-
+        obj.layout.addWidget(obj.lbl_search)
+        obj.layout.addLayout(obj.layout_ave_time)
+        obj.layout.addLayout(obj.layout_left)
+        obj.layout.addLayout(obj.layout_right)
+        obj.layout.addLayout(obj.layout_step)
+        obj.layout.addLayout(obj.layout_sim_tol)
+        obj.layout.addLayout(obj.layout_thresh)
+        obj.layout.addLayout(obj.layout_wait)
         obj.layout.addLayout(obj.layout_algorithm)
         obj.layout.addLayout(obj.layout_start)
         obj.layout.addLayout(obj.layout_stop)

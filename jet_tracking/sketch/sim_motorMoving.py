@@ -75,7 +75,7 @@ class SimulatedMotor(object):
             self.sim_ternary(self.context)
 
     def sim_linear(self, context):
-        self.motor_initial = context.motor_position
+        self.motor_initial = self.context.motor_position
         self.ratio_initial = self.average_intensity(context)
         self.motor_position = self.left
         self.ratio_pt = []
@@ -91,7 +91,7 @@ class SimulatedMotor(object):
             self.ratio_ave = self.average_intensity(context)
             self.ratios.append(self.ratio_ave)
             self.positions.append(self.motor_position)
-            self.motor_position += 0.01
+            self.motor_position += 0.005
             self.context.update_motor_position(self.motor_position)
         self.max_ratio = max(self.ratios)
         self.index_max = self.ratios.index(self.max_ratio)
@@ -100,13 +100,14 @@ class SimulatedMotor(object):
             self.context.update_motor_position(self.max_motor)
         else:
             self.context.update_motor_position(self.motor_initial)
+        print("search done")
 
     def sim_ternary(self, context):
         self.left = -0.3
         self.right = 0.3
         self.left_third = 0
         self.right_third = 0
-        self.tol = 0.01
+        self.tol = 0.001
         self.motor_position = context.motor_position
         self.ratio_left = 0
         self.ratio_right = 0
@@ -126,7 +127,7 @@ class SimulatedMotor(object):
                 self.right = self.right_third
         self.motor_position = (self.right + self.left) / 2
         self.context.update_motor_position(self.motor_position)
-#        print(self.motor_position)
+        print("search done")
 
     def sim_golden_section(self):
         print("golden section search")
@@ -135,15 +136,15 @@ class SimulatedMotor(object):
         self.track(self.context)
 
     def track(self, context):
-        self.low = 0.9 * 1
+        self.low = 0.9 * self.context.calibration_values['ratio']['mean']
         self.ratio_ave = 1
         while context.simTracking is True:
             time.sleep(5)
 #            print("tracking")
             self.ratio_ave = self.average_intensity(context)
-            print(self.ratio_ave)
+#            print(self.ratio_ave)
             if self.ratio_ave < self.low:
-#                print("starting search")
+                print("starting search")
                 self._start()
             else:
                 time.sleep(1)

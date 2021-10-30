@@ -62,6 +62,13 @@ class Context(object):
         self.sim_algorithm = "Linear Scan"
         self.ratio = 1
         self.dropped = False
+        self.ave_time = 1
+        self.left = -0.1
+        self.right = 0.1
+        self.step = 0.005
+        self.sim_tol = 0.001
+        self.thresh = 90
+        self.wait = 5
 
         # added while adding simulator
     def update_motor_position(self, mp):
@@ -91,6 +98,34 @@ class Context(object):
     def update_background(self, bgn):
         self.bg = bgn
         self.signals.changeBackground.emit(self.bg)
+
+    def update_ave_time(self, at):
+        self.ave_time = at
+        self.signals.changeAverageTime.emit(self.ave_time)
+
+    def update_left(self, left):
+        self.left = left
+        self.signals.changeLeft.emit(self.left)
+
+    def update_right(self, right):
+        self.right = right
+        self.signals.changeRight.emit(self.right)
+
+    def update_step(self, step):
+        self.step = step
+        self.signals.changeStep.emit(self.step)
+
+    def update_sim_tol(self, tol):
+        self.sim_tol = tol
+        self.signals.changeSimTol.emit(self.sim_tol)
+
+    def update_thresh(self, thresh):
+        self.thresh = thresh
+        self.signals.changeThresh.emit(self.thresh)
+
+    def update_wait(self, wait):
+        self.wait = wait
+        self.signals.changeWait.emit(self.wait)
 
     def update_live_graphing(self, live):
         self.live_data = live

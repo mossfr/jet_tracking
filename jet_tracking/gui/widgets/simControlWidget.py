@@ -4,7 +4,6 @@ from datastream import StatusThread, MotorThread
 import logging
 from sketch.sim_motorMoving import SimulatedMotor
 import threading
-
 log = logging.getLogger(__name__)
 
 
@@ -34,8 +33,15 @@ class SimWidget(QFrame, Sim_Ui, SimulatedMotor):
         self.context.update_jet_center(float(self.box_jet_center.text()))
         self.context.update_max_intensity(float(self.box_max_int.text()))
         self.context.update_background(float(self.box_bg.text()))
-
         self.context.update_sim_algorithm(self.cbox_sim_algorithm.currentText())
+
+        self.context.update_ave_time(float(self.box_ave_time.text()))
+        self.context.update_left(float(self.box_left.text()))
+        self.context.update_right(float(self.box_right.text()))
+        self.context.update_step(float(self.box_step.text()))
+        self.context.update_sim_tol(float(self.box_sim_tol.text()))
+        self.context.update_thresh(float(self.box_thresh.text()))
+        self.context.update_wait(float(self.box_wait.text()))
 
     def make_connections(self):
         self.box_motor_pos.checkVal.connect(self.context.update_motor_position)
@@ -45,6 +51,14 @@ class SimWidget(QFrame, Sim_Ui, SimulatedMotor):
         self.box_jet_center.checkVal.connect(self.context.update_jet_center)
         self.box_max_int.checkVal.connect(self.context.update_max_intensity)
         self.box_bg.checkVal.connect(self.context.update_background)
+
+        self.box_ave_time.checkVal.connect(self.context.update_ave_time)
+        self.box_left.checkVal.connect(self.context.update_left)
+        self.box_right.checkVal.connect(self.context.update_right)
+        self.box_step.checkVal.connect(self.context.update_step)
+        self.box_sim_tol.checkVal.connect(self.context.update_sim_tol)
+        self.box_thresh.checkVal.connect(self.context.update_thresh)
+        self.box_wait.checkVal.connect(self.context.update_wait)
 
         self.cbox_sim_algorithm.currentTextChanged.connect(self.context.update_sim_algorithm)
         self.bttn_search.clicked.connect(self._start_search)
@@ -60,13 +74,16 @@ class SimWidget(QFrame, Sim_Ui, SimulatedMotor):
     def _start_tracking(self):
 #        self.update_tracking_status("enabled", green)
         self.context.update_sim_tracking(True)
+#        self.set_tracking_status('Tracking', 'green')
 #        self.sim_tracking()
+        print("started tracking")
         thread2 = threading.Thread(target=self.sim_tracking, args=())
         thread2.start()
 
     def _stop_tracking(self):
 #        self.update_tracking_status("disabled", red)
         self.context.update_sim_tracking(False)
+        print("stopped tracking")
 
 #    def set_tracking_status(self, status, color):
 #        self.lbl_tracking_status.setText(status)
