@@ -35,6 +35,8 @@ class SimulatedMotor(object):
         self.right = 0.1
         self.step = 0.01
         self.wait = 5
+        self.sim_thresh = 90
+        self.thresh = 90
         self.sim_algorithm = "Linear Scan"
         # get current simulated motor position
 #        self.signals.update.connect(self.updateVals)
@@ -56,7 +58,8 @@ class SimulatedMotor(object):
 
     def average_intensity(self, context):
         self.t = 0
-        while self.t < 10:
+        self.ave_time = self.context.ave_time * 10
+        while self.t < self.ave_time:
             if context.dropped is False:
                 self.ratio_pt = []
                 self.ratio_pt.append(context.ratio)
@@ -75,6 +78,8 @@ class SimulatedMotor(object):
             self.sim_ternary(self.context)
 
     def sim_linear(self, context):
+        self.left = self.context.left
+        self.right = self.context.right
         self.motor_initial = self.context.motor_position
         self.ratio_initial = self.average_intensity(context)
         self.motor_position = self.left
@@ -91,8 +96,9 @@ class SimulatedMotor(object):
             self.ratio_ave = self.average_intensity(context)
             self.ratios.append(self.ratio_ave)
             self.positions.append(self.motor_position)
-            self.motor_position += 0.005
+            self.motor_position += self.context.step
             self.context.update_motor_position(self.motor_position)
+            print('motor position', self.motor_position)
         self.max_ratio = max(self.ratios)
         self.index_max = self.ratios.index(self.max_ratio)
         self.max_motor = self.positions[self.index_max]
@@ -103,11 +109,11 @@ class SimulatedMotor(object):
         print("search done")
 
     def sim_ternary(self, context):
-        self.left = -0.3
-        self.right = 0.3
+        self.left = self.context.left * 3
+        self.right = self.context.right * 3
         self.left_third = 0
         self.right_third = 0
-        self.tol = 0.001
+        self.tol = self.context.sim_tol
         self.motor_position = context.motor_position
         self.ratio_left = 0
         self.ratio_right = 0
@@ -132,15 +138,24 @@ class SimulatedMotor(object):
     def sim_golden_section(self):
         print("golden section search")
 
+    def sim_coarse_fine(self):
+        print("coarse then fine linear scan")
+
+    def sim_coarse_ternary(self):
+        print("coarse linear scan then ternary search")
+
+    def sim_ternary_variable(self):
+        print("ternary search with narrowing window")
+
     def sim_tracking(self):
         self.track(self.context)
 
     def track(self, context):
-        self.low = 0.9 * self.context.calibration_values['ratio']['mean']
+        self.sim_thresh = self.context.thresh / 100
+        self.low = self.sim_thresh * self.context.calibration_values['ratio']['mean']
         self.ratio_ave = 1
         while context.simTracking is True:
-            time.sleep(5)
-#            print("tracking")
+            time.sleep(self.context.wait)
             self.ratio_ave = self.average_intensity(context)
 #            print(self.ratio_ave)
             if self.ratio_ave < self.low:
